@@ -1,7 +1,8 @@
 ﻿using Bogus;
-using BogusData.Model;
+using DataCenter.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -14,56 +15,113 @@ namespace BogusData
     {
         static void Main(string[] args)
         {
-            var genderOptions = new[] { "Мужской", "Женский" }; // Пример значений пола
-
-            var patientGenerator = new Faker<Patient>()
-                .RuleFor(u => u.Photo, f => f.Image.LoremFlickrUrl())
-                .RuleFor(u => u.FirstName, f => f.Name.FirstName())
-                .RuleFor(u => u.LastName, f => f.Name.LastName())
-                .RuleFor(u => u.MiddleName, f => f.Name.FirstName(f.PickRandom(genderOptions) == "Мужской" ? Bogus.DataSets.Name.Gender.Male : Bogus.DataSets.Name.Gender.Female))
-                .RuleFor(u => u.PassportNumber, f => $"45 05 {f.Random.Number(100000, 999999)}")
-                .RuleFor(u => u.BirthDate, f => f.Date.Past(30, DateTime.Today.AddYears(-18)))
-                .RuleFor(u => u.Gender, f => f.PickRandom(genderOptions))
-                .RuleFor(u => u.Address, f => f.Address.FullAddress())
-                .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber())
-                .RuleFor(u => u.Email, f => f.Internet.Email())
-                .RuleFor(u => u.MedicalCardNumber, f => $"MC-{f.Random.Hexadecimal(8)}")
-                .RuleFor(u => u.MedicalCardIssueDate, f => f.Date.Past(10))
-                .RuleFor(u => u.LastVisitDate, f => f.Date.Past(2))
-                .RuleFor(u => u.NextVisitDate, f => f.Date.Soon(30))
-                .RuleFor(u => u.InsurancePolicyNumber, f => $"IP-{f.Random.Hexadecimal(8)}")
-                .RuleFor(u => u.InsurancePolicyEndDate, f => f.Date.Future(1))
-                .RuleFor(u => u.Diagnosis, f => f.Lorem.Sentence());
-
-            var patients = patientGenerator.Generate(100); // Генерация 100 пациентов
-
-            string filePath = $"{Environment.CurrentDirectory}\\file.txt";
-            using (var writer = new StreamWriter(filePath))
+            try
             {
-                foreach (var patient in patients)
+
+                using (var db = new dbModel())
                 {
-                    writer.WriteLine($"Фото: {patient.Photo}");
-                    writer.WriteLine($"Имя: {patient.FirstName}");
-                    writer.WriteLine($"Фамилия: {patient.LastName}");
-                    writer.WriteLine($"Отчество: {patient.MiddleName}");
-                    writer.WriteLine($"Номер и серия паспорта: {patient.PassportNumber}");
-                    writer.WriteLine($"Дата рождения: {patient.BirthDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)}");
-                    writer.WriteLine($"Пол: {patient.Gender}");
-                    writer.WriteLine($"Адрес: {patient.Address}");
-                    writer.WriteLine($"Телефон: {patient.PhoneNumber}");
-                    writer.WriteLine($"Email: {patient.Email}");
-                    writer.WriteLine($"Номер медицинской карты: {patient.MedicalCardNumber}");
-                    writer.WriteLine($"Дата выдачи медицинской карты: {patient.MedicalCardIssueDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)}");
-                    writer.WriteLine($"Дата последнего обращения: {patient.LastVisitDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)}");
-                    writer.WriteLine($"Дата следующего назначенного визита: {patient.NextVisitDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)}");
-                    writer.WriteLine($"Номер страхового полиса: {patient.InsurancePolicyNumber}");
-                    writer.WriteLine($"Дата окончания действия страхового полиса: {patient.InsurancePolicyEndDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)}");
-                    writer.WriteLine($"Диагноз: {patient.Diagnosis}");
-                    writer.WriteLine(new string('-', 80)); // Разделитель между записями
+
+                    var genderOptions = new[] { "Мужской", "Женский" }; // Пример значений пола
+                    var passportSeries = new[] { "4505", "4604", "4703", "4802" };
+                    var workplaces = new[] {
+                        "ООО Рога и Копыта",
+                        "ЗАО НаноТех",
+                        "ИП Иванов",
+                        "МУП Центральная поликлиника",
+                        "ОАО СтройГаз"
+                    };
+
+                    var diagnoses = new[] {
+                        "ОРВИ",
+                        "Гастрит",
+                        "Бронхит",
+                        "Ангина",
+                        "Аллергия"
+                    };
+
+                    // Генератор для Gender
+                    var genders = new Faker<Gender>()
+                        .RuleFor(g => g.Title, f => f.PickRandom(genderOptions))
+                        .Generate(2);
+                    db.Gender.AddRange(genders);
+                    db.SaveChanges();
+
+                    // Генератор для Passport
+                    var passports = new Faker<Passport>()
+                        .RuleFor(p => p.SeriesPassport, f => f.PickRandom(passportSeries))
+                        .RuleFor(p => p.NumberPassport, f => f.Random.Number(100000, 999999).ToString())
+                        .Generate(100);
+                    db.Passport.AddRange(passports);
+                    db.SaveChanges();
+
+                    // Генератор для MedicalCard
+                    var medicalCards = new Faker<MedicalCard>()
+                        .RuleFor(m => m.Number, f => $"MC-{f.Random.Hexadecimal(8)}")
+                        .RuleFor(m => m.DateOfIssue, f => f.Date.Past(10))
+                        .RuleFor(m => m.DateOfLastApeal, f => f.Date.Past(2))
+                        .RuleFor(m => m.DateOfNextApeal, f => f.Date.Soon(30))
+                        .Generate(100);
+                    db.MedicalCard.AddRange(medicalCards);
+                    db.SaveChanges();
+                    // Генератор для InsurancePolicy
+                    var insurancePolicies = new Faker<InsuransePolicy>()
+                        .RuleFor(i => i.Number, f => $"IP-{f.Random.Hexadecimal(8)}")
+                        .RuleFor(i => i.DateOfExpiration, f => f.Date.Future(1))
+                        .Generate(100);
+                    db.InsuransePolicy.AddRange(insurancePolicies);
+                    db.SaveChanges();
+
+                    var insuranceCompanyFaker = new Faker<InsuranseCompany>("ru")
+                        .RuleFor(i => i.Title, f => f.Company.CompanyName());
+                    var insuranceCompanies = insuranceCompanyFaker.Generate(10);
+                    db.InsuranseCompany.AddRange(insuranceCompanies);
+                    db.SaveChanges();
+
+                    var insuranceCompanyIds = db.InsuranseCompany.Select(ic => ic.ID).ToList();
+
+                    var patientGenerator = new Faker<Patient>("ru")
+                        .RuleFor(u => u.Photo, f => f.Image.LoremFlickrUrl())
+                        .RuleFor(u => u.FirstName, f => f.Name.FirstName())
+                        .RuleFor(u => u.LastName, f => f.Name.LastName())
+                        .RuleFor(u => u.Gender, f => f.PickRandom(genders))
+                        .RuleFor(u => u.Patronymic, (f, u) =>
+                        {
+                            var maleMiddleNames = new[] { "Александрович", "Дмитриевич", "Максимович", "Иванович", "Петрович" };
+                            var femaleMiddleNames = new[] { "Александровна", "Дмитриевна", "Максимовна", "Ивановна", "Петровна" };
+                            return u.Gender.Title == "Мужской" ? f.PickRandom(maleMiddleNames) : f.PickRandom(femaleMiddleNames);
+                        })
+
+                        .RuleFor(u => u.DateOfBirth, f => f.Date.Past(80, DateTime.Today.AddYears(-18)))
+                        .RuleFor(u => u.Adress, f => f.Address.FullAddress())
+                        .RuleFor(u => u.Phone, f => f.Phone.PhoneNumber())
+                        .RuleFor(u => u.Email, f => f.Internet.Email())
+                        .RuleFor(u => u.WorkPlace, f => f.PickRandom(workplaces))
+                        .RuleFor(u => u.Diagnos, f => f.PickRandom(diagnoses))
+                        .RuleFor(u => u.IDGender, f => f.PickRandom(genders).ID)
+                        .RuleFor(u => u.IDPassport, (f, u) => passports[f.IndexFaker % passports.Count].ID)
+                        .RuleFor(u => u.IDMedicalCard, (f, u) => medicalCards[f.IndexFaker % medicalCards.Count].ID)
+                        .RuleFor(u => u.IDInsuransePolicy, (f, u) => insurancePolicies[f.IndexFaker % insuranceCompanies.Count].ID)
+                        .RuleFor(u => u.IDInsuranseCompany, f => f.PickRandom(insuranceCompanyIds));
+
+                    var patients = patientGenerator.Generate(100);
+                    db.Patient.AddRange(patients);
+                    db.SaveChanges();
+
+                    Console.WriteLine("Generation complete.");
                 }
             }
-
-            Console.WriteLine("Data export complete.");
+            catch (DbEntityValidationException ex)
+            {
+                var errorMessageBuilder = new StringBuilder();
+                foreach (var validationErrors in ex.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        errorMessageBuilder.AppendLine($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                    }
+                }
+                Console.WriteLine(errorMessageBuilder);
+            }
         }
     }
 

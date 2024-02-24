@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCenter", "DataCenter\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BogusData", "BogusData\BogusData.csproj", "{3E258275-7235-46C5-A256-3CDC4D36C361}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClientApp", "ConsoleClientApp\ConsoleClientApp.csproj", "{A5BBF4DA-5C6B-46ED-B0DB-272045C44603}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3E258275-7235-46C5-A256-3CDC4D36C361}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E258275-7235-46C5-A256-3CDC4D36C361}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E258275-7235-46C5-A256-3CDC4D36C361}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5BBF4DA-5C6B-46ED-B0DB-272045C44603}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5BBF4DA-5C6B-46ED-B0DB-272045C44603}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5BBF4DA-5C6B-46ED-B0DB-272045C44603}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5BBF4DA-5C6B-46ED-B0DB-272045C44603}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

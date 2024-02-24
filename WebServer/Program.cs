@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using WebServer.Requests;
 using WebServer.Settings;
 
 namespace WebServer
@@ -33,11 +34,10 @@ namespace WebServer
                 {
                     case "GET":
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
-                        
                         break;
                     case "POST":
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
-                        
+                        await PatientRequests.HandlePostPatient(request, response);
                         break;
                     case "PUT":
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);

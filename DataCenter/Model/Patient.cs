@@ -50,7 +50,6 @@ namespace DataCenter.Model
 
         public int? IDInsuransePolicy { get; set; }
 
-        [StringLength(50)]
         public string Diagnos { get; set; }
 
         public int? IDDiseaseHistory { get; set; }

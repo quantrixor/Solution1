@@ -66,8 +66,8 @@
     <Compile Include="Model\Prescription.cs" />
     <Compile Include="Model\Referrals.cs" />
     <Compile Include="Model\ResultEvent.cs" />
+    <Compile Include="Model\SecurityAccessLog.cs" />
     <Compile Include="Model\Speciality.cs" />
-    <Compile Include="Model\sysdiagrams.cs" />
     <Compile Include="Model\TherapeuticDiagnosticMeasures.cs" />
     <Compile Include="Model\TypeEvent.cs" />
     <Compile Include="Model\TypeHospitalization.cs" />

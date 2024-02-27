@@ -52,6 +52,21 @@ namespace WebServer
                         break;
                 }
             }
+            else if (path.StartsWith("/api/track"))
+            {
+                switch (method)
+                {
+                    case "GET":
+                        // Логика для возврата данных о последнем местоположении сотрудников
+                        Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
+                        await TrackRequests.HandleGetTrack(request, response);
+                        break;
+                    default:
+                        response.StatusCode = 405; // Method Not Allowed
+                        await Response.SendResponse(response, "Method Not Allowed", "text/plain");
+                        break;
+                }
+            }
             else
             {
                 Logger.Log($"Resources not found.", ConsoleColor.DarkRed, HttpStatusCode.NotFound);

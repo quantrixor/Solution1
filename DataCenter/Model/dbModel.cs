@@ -25,8 +25,8 @@ namespace DataCenter.Model
         public virtual DbSet<Prescription> Prescription { get; set; }
         public virtual DbSet<Referrals> Referrals { get; set; }
         public virtual DbSet<ResultEvent> ResultEvent { get; set; }
+        public virtual DbSet<SecurityAccessLog> SecurityAccessLog { get; set; }
         public virtual DbSet<Speciality> Speciality { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TherapeuticDiagnosticMeasures> TherapeuticDiagnosticMeasures { get; set; }
         public virtual DbSet<TypeEvent> TypeEvent { get; set; }
         public virtual DbSet<TypeHospitalization> TypeHospitalization { get; set; }

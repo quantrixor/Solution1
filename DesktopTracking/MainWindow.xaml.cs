@@ -82,7 +82,7 @@ namespace DesktopTracking
                     {
                         Width = 10,
                         Height = 10,
-                        Fill = person.PersonRole == "Клиент" ? Brushes.Blue : Brushes.Red
+                        Fill = person.PersonRole == "Клиент" ? Brushes.Green : Brushes.Blue
                     };
 
                     // Установка координат маркера на канвасе

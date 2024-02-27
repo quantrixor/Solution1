@@ -58,7 +58,6 @@ namespace DesktopTracking
                 {
                     int scudNumber = person.LastSecurityPointNumber ?? 0;
 
-                    // Предположим, что функция GetCanvasCoordinatesFromScudNumber возвращает точку на канвасе для данного СКУД
                     Point location = GetCanvasCoordinatesFromScudNumber(scudNumber);
 
                     // Создаем визуальный маркер для человека
@@ -67,6 +66,7 @@ namespace DesktopTracking
                         Width = 10,
                         Height = 10,
                         Fill = Brushes.Red // Выберите цвет в зависимости от роли
+                                           // Необходимо додумать эту логику...
                     };
 
                     // Установка координат маркера на канвасе
@@ -83,7 +83,7 @@ namespace DesktopTracking
             }
            
         }
-
+        // Словарь с кооридинатами
         private Dictionary<int, Point> scudNumberToCanvasCoordinates = new Dictionary<int, Point>()
         {
             { 15, new Point(1177, 1646) },
@@ -97,11 +97,11 @@ namespace DesktopTracking
             {
                 if (scudNumberToCanvasCoordinates.TryGetValue(scudNumber, out Point imageCoordinates))
                 {
-                    // Если изображение масштабируется, применяем масштабирование
+                    // Если изображение масштабируется, применяем масштабирование p.s. она у нас должна быть в оригинальных размерах
                     double scaleX = TrackingCanvas.ActualWidth / originalImageWidth;
                     double scaleY = TrackingCanvas.ActualHeight / originalImageHeight;
 
-                    // Преобразование координат изображения в координаты канваса
+                    // Преобразование координат изображения в координаты канваса (канвас не трогай, пусть будет пустым)
                     double canvasX = imageCoordinates.X * scaleX;
                     double canvasY = imageCoordinates.Y * scaleY;
 

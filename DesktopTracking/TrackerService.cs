@@ -25,7 +25,7 @@ namespace DesktopTracking
             if (response.IsSuccessStatusCode)
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
-                // Измените эту строку, чтобы ожидать список, а не один объект TrackingResponse
+
                 List<SecurityAccessLog> trackingData = JsonConvert.DeserializeObject<List<SecurityAccessLog>>(jsonResponse);
                 return trackingData; // Возвращаем уже список объектов SecurityAccessLog
             }

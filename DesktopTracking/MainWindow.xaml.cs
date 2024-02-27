@@ -57,7 +57,6 @@ namespace DesktopTracking
                 foreach (var person in securityAccessLogs)
                 {
                     int scudNumber = person.LastSecurityPointNumber ?? 0;
-
                     Point location = GetCanvasCoordinatesFromScudNumber(scudNumber);
 
                     // Создаем визуальный маркер для человека
@@ -65,8 +64,7 @@ namespace DesktopTracking
                     {
                         Width = 10,
                         Height = 10,
-                        Fill = Brushes.Red // Выберите цвет в зависимости от роли
-                                           // Необходимо додумать эту логику...
+                        Fill = person.PersonRole == "Клиент" ? Brushes.Blue : Brushes.Red
                     };
 
                     // Установка координат маркера на канвасе
@@ -75,14 +73,30 @@ namespace DesktopTracking
 
                     // Добавление маркера на канвас
                     TrackingCanvas.Children.Add(personMarker);
+                    string direction = person.LastSecurityPointDirection == "in" ? "Зашел" : "Вышел";
+                    // Создаем стикер с информацией
+                    TextBlock infoSticker = new TextBlock
+                    {
+                        Text = $"{person.PersonCode}\n {person.PersonRole}\n {person.LastSecurityPointTime}\n {direction}",
+                        Foreground = Brushes.Black,
+                        Background = Brushes.White,
+                        Padding = new Thickness(2)
+                    };
+
+                    // Установка координат стикера на канвасе (с небольшим смещением от маркера)
+                    Canvas.SetLeft(infoSticker, location.X + 15); // смещение по X
+                    Canvas.SetTop(infoSticker, location.Y - 10); // смещение по Y
+
+                    // Добавление стикера на канвас
+                    TrackingCanvas.Children.Add(infoSticker);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Ошибка: " + ex.Message);
             }
-           
         }
+
         // Словарь с кооридинатами
         private Dictionary<int, Point> scudNumberToCanvasCoordinates = new Dictionary<int, Point>()
         {

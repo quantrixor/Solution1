@@ -10,9 +10,11 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace DesktopTracking
 {
@@ -26,10 +28,26 @@ namespace DesktopTracking
         private double originalImageWidth = 7460;
         private double originalImageHeight = 2580;
 
+        private readonly DispatcherTimer _refreshTimer;
+
         public MainWindow()
         {
             InitializeComponent();
             _trackerService = new TrackerService();
+            _refreshTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(3)
+            };
+            _refreshTimer.Tick += RefreshTimer_Tick;
+            _refreshTimer.Start();
+        }
+
+        private async void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            // Получаем данные с сервера
+            var trackingData = await _trackerService.GetTrackingDataAsync();
+            // Отображаем данные
+            DisplayPeopleOnCanvas(trackingData);
         }
 
         // Обработчик нажатия кнопки

@@ -67,6 +67,16 @@ namespace WebServer
                         break;
                 }
             }
+            else if (path.StartsWith("/api/login"))
+            {
+                switch (method)
+                {
+                    case "POST":
+                        Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
+                        await DoctorRequests.HandleAuthUser(request, response);
+                        break;
+                }
+            }
             else
             {
                 Logger.Log($"Resources not found.", ConsoleColor.DarkRed, HttpStatusCode.NotFound);
@@ -80,7 +90,7 @@ namespace WebServer
             server = new HttpListener();
             server.Prefixes.Add("http://localhost:8080/api/");
             server.Start();
-            Logger.Log("Server started listening on http://localhost:8000/api/", ConsoleColor.DarkGray);
+            Logger.Log("Server started listening on http://localhost:8080/api/", ConsoleColor.DarkGray);
 
             while (true)
             {

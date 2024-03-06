@@ -14,7 +14,6 @@ namespace DataCenter.Model
 
         public virtual DbSet<CodeHospitalization> CodeHospitalization { get; set; }
         public virtual DbSet<DiseaseHistory> DiseaseHistory { get; set; }
-        public virtual DbSet<Doctor> Doctor { get; set; }
         public virtual DbSet<Gender> Gender { get; set; }
         public virtual DbSet<Hospitalization> Hospitalization { get; set; }
         public virtual DbSet<InsuranseCompany> InsuranseCompany { get; set; }
@@ -22,14 +21,23 @@ namespace DataCenter.Model
         public virtual DbSet<MedicalCard> MedicalCard { get; set; }
         public virtual DbSet<Passport> Passport { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
+        public virtual DbSet<Permissions> Permissions { get; set; }
         public virtual DbSet<Prescription> Prescription { get; set; }
         public virtual DbSet<Referrals> Referrals { get; set; }
+        public virtual DbSet<ReferralsService> ReferralsService { get; set; }
         public virtual DbSet<ResultEvent> ResultEvent { get; set; }
+        public virtual DbSet<RolePermissions> RolePermissions { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<ScheduleChanges> ScheduleChanges { get; set; }
+        public virtual DbSet<ScheduleEvents> ScheduleEvents { get; set; }
+        public virtual DbSet<Schedules> Schedules { get; set; }
+        public virtual DbSet<ScheduleTemplates> ScheduleTemplates { get; set; }
         public virtual DbSet<SecurityAccessLog> SecurityAccessLog { get; set; }
         public virtual DbSet<Speciality> Speciality { get; set; }
         public virtual DbSet<TherapeuticDiagnosticMeasures> TherapeuticDiagnosticMeasures { get; set; }
         public virtual DbSet<TypeEvent> TypeEvent { get; set; }
         public virtual DbSet<TypeHospitalization> TypeHospitalization { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -44,22 +52,9 @@ namespace DataCenter.Model
                 .WithOptional(e => e.DiseaseHistory)
                 .HasForeignKey(e => e.IDDiseaseHistory);
 
-            modelBuilder.Entity<Doctor>()
-                .HasMany(e => e.Referrals)
-                .WithRequired(e => e.Doctor)
-                .HasForeignKey(e => e.IDDoctor)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Doctor>()
-                .HasMany(e => e.TherapeuticDiagnosticMeasures)
-                .WithRequired(e => e.Doctor)
-                .HasForeignKey(e => e.IDDoctor)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Gender>()
-                .HasMany(e => e.Doctor)
+                .HasMany(e => e.Users)
                 .WithRequired(e => e.Gender)
-                .HasForeignKey(e => e.IDGender)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Gender>()
@@ -119,8 +114,13 @@ namespace DataCenter.Model
                 .HasForeignKey(e => e.IDResultEvent)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Roles>()
+                .HasMany(e => e.Users)
+                .WithRequired(e => e.Roles)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Speciality>()
-                .HasMany(e => e.Doctor)
+                .HasMany(e => e.Users)
                 .WithRequired(e => e.Speciality)
                 .HasForeignKey(e => e.IDSpeciality)
                 .WillCascadeOnDelete(false);
@@ -135,6 +135,28 @@ namespace DataCenter.Model
                 .HasMany(e => e.CodeHospitalization)
                 .WithRequired(e => e.TypeHospitalization)
                 .HasForeignKey(e => e.IDTypeHospitalization)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.Referrals)
+                .WithRequired(e => e.Users)
+                .HasForeignKey(e => e.IDUser)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.ReferralsService)
+                .WithOptional(e => e.Users)
+                .HasForeignKey(e => e.IssuedBy);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.ScheduleChanges)
+                .WithOptional(e => e.Users)
+                .HasForeignKey(e => e.ChangedBy);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(e => e.TherapeuticDiagnosticMeasures)
+                .WithRequired(e => e.Users)
+                .HasForeignKey(e => e.IDUser)
                 .WillCascadeOnDelete(false);
         }
     }

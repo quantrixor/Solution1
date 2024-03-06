@@ -12,7 +12,8 @@ namespace DataCenter.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Speciality()
         {
-            Doctor = new HashSet<Doctor>();
+            ScheduleTemplates = new HashSet<ScheduleTemplates>();
+            Users = new HashSet<Users>();
         }
 
         public int ID { get; set; }
@@ -22,6 +23,9 @@ namespace DataCenter.Model
         public string Title { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Doctor> Doctor { get; set; }
+        public virtual ICollection<ScheduleTemplates> ScheduleTemplates { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Users> Users { get; set; }
     }
 }

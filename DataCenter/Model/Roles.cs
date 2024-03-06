@@ -6,26 +6,25 @@ namespace DataCenter.Model
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Gender")]
-    public partial class Gender
+    public partial class Roles
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Gender()
+        public Roles()
         {
+            RolePermissions = new HashSet<RolePermissions>();
             Users = new HashSet<Users>();
-            Patient = new HashSet<Patient>();
         }
 
-        public int ID { get; set; }
+        [Key]
+        public int RoleID { get; set; }
 
-        [Required]
         [StringLength(50)]
-        public string Title { get; set; }
+        public string RoleName { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RolePermissions> RolePermissions { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Users> Users { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Patient> Patient { get; set; }
     }
 }

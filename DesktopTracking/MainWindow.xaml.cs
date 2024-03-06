@@ -63,8 +63,6 @@ namespace DesktopTracking
                 MessageBox.Show(ex.Message);
             }
         }
-
-
         private void DisplayPeopleOnCanvas(List<SecurityAccessLog> securityAccessLogs)
         {
             try
@@ -149,8 +147,6 @@ namespace DesktopTracking
                 MessageBox.Show(ex.Message);
                 return new Point(0, 0);
             }
-          
         }
-
     }
 }

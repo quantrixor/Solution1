@@ -13,6 +13,7 @@ namespace DataCenter.Model
         public Patient()
         {
             Hospitalization = new HashSet<Hospitalization>();
+            ReferralsService = new HashSet<ReferralsService>();
             TherapeuticDiagnosticMeasures = new HashSet<TherapeuticDiagnosticMeasures>();
         }
 
@@ -78,6 +79,9 @@ namespace DataCenter.Model
         public virtual MedicalCard MedicalCard { get; set; }
 
         public virtual Passport Passport { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReferralsService> ReferralsService { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TherapeuticDiagnosticMeasures> TherapeuticDiagnosticMeasures { get; set; }

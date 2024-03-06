@@ -1,13 +1,8 @@
 ﻿using DataCenter.Model;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using WebServer.Settings;
 
@@ -100,6 +95,5 @@ namespace WebServer.Requests
                 await Response.SendResponse(response, ex.Message, "application/json", HttpStatusCode.BadRequest);
             }
         }
-
     }
 }

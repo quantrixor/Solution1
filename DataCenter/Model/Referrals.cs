@@ -13,7 +13,7 @@ namespace DataCenter.Model
 
         public int IDMedicalCard { get; set; }
 
-        public int IDDoctor { get; set; }
+        public int IDUser { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime CreationDate { get; set; }
@@ -30,8 +30,8 @@ namespace DataCenter.Model
         [Required]
         public string Recommendations { get; set; }
 
-        public virtual Doctor Doctor { get; set; }
-
         public virtual MedicalCard MedicalCard { get; set; }
+
+        public virtual Users Users { get; set; }
     }
 }

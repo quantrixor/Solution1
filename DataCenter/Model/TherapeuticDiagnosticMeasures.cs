@@ -12,7 +12,7 @@ namespace DataCenter.Model
 
         public int IDPatient { get; set; }
 
-        public int IDDoctor { get; set; }
+        public int IDUser { get; set; }
 
         public int IDTypeEvent { get; set; }
 
@@ -25,12 +25,12 @@ namespace DataCenter.Model
         [Required]
         public string Recomendation { get; set; }
 
-        public virtual Doctor Doctor { get; set; }
-
         public virtual Patient Patient { get; set; }
 
         public virtual ResultEvent ResultEvent { get; set; }
 
         public virtual TypeEvent TypeEvent { get; set; }
+
+        public virtual Users Users { get; set; }
     }
 }

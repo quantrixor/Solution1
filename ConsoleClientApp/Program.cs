@@ -28,14 +28,13 @@ namespace ConsoleClientApp
                     Phone = "555-555-5555",
                     Email = "johndoe@example.com",
                     WorkPlace = "Company Inc."
-                    // Остальные поля, зависящие от ID, будут связаны на сервере
                 }
             };
 
             var json = JsonConvert.SerializeObject(requestData);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var url = "http://localhost:8080/api/Patient/AddWithDependencies"; // Предполагается, что у вас есть такой endpoint
+            var url = "http://localhost:8080/api/Patient/AddWithDependencies";
             var client = new HttpClient();
 
             try

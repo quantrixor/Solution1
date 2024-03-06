@@ -6,17 +6,20 @@ namespace DataCenter.Model
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Doctor")]
-    public partial class Doctor
+    public partial class Users
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Doctor()
+        public Users()
         {
             Referrals = new HashSet<Referrals>();
+            ReferralsService = new HashSet<ReferralsService>();
+            ScheduleChanges = new HashSet<ScheduleChanges>();
+            Schedules = new HashSet<Schedules>();
             TherapeuticDiagnosticMeasures = new HashSet<TherapeuticDiagnosticMeasures>();
         }
 
-        public int ID { get; set; }
+        [Key]
+        public int UserID { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -29,7 +32,7 @@ namespace DataCenter.Model
         [StringLength(50)]
         public string Patronymic { get; set; }
 
-        public int IDGender { get; set; }
+        public int GenderID { get; set; }
 
         [Required]
         [StringLength(20)]
@@ -39,8 +42,6 @@ namespace DataCenter.Model
         [StringLength(50)]
         public string Email { get; set; }
 
-        public int IDSpeciality { get; set; }
-
         [Required]
         [StringLength(50)]
         public string Login { get; set; }
@@ -49,12 +50,27 @@ namespace DataCenter.Model
         [StringLength(50)]
         public string Password { get; set; }
 
-        public virtual Gender Gender { get; set; }
+        public int IDSpeciality { get; set; }
 
-        public virtual Speciality Speciality { get; set; }
+        public int RoleID { get; set; }
+
+        public virtual Gender Gender { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Referrals> Referrals { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReferralsService> ReferralsService { get; set; }
+
+        public virtual Roles Roles { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ScheduleChanges> ScheduleChanges { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Schedules> Schedules { get; set; }
+
+        public virtual Speciality Speciality { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TherapeuticDiagnosticMeasures> TherapeuticDiagnosticMeasures { get; set; }

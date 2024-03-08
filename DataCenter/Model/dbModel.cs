@@ -12,6 +12,7 @@ namespace DataCenter.Model
         {
         }
 
+        public virtual DbSet<Bed> Bed { get; set; }
         public virtual DbSet<CodeHospitalization> CodeHospitalization { get; set; }
         public virtual DbSet<DiseaseHistory> DiseaseHistory { get; set; }
         public virtual DbSet<Gender> Gender { get; set; }
@@ -38,6 +39,7 @@ namespace DataCenter.Model
         public virtual DbSet<TypeEvent> TypeEvent { get; set; }
         public virtual DbSet<TypeHospitalization> TypeHospitalization { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Ward> Ward { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -157,6 +159,11 @@ namespace DataCenter.Model
                 .HasMany(e => e.TherapeuticDiagnosticMeasures)
                 .WithRequired(e => e.Users)
                 .HasForeignKey(e => e.IDUser)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Ward>()
+                .HasMany(e => e.Bed)
+                .WithRequired(e => e.Ward)
                 .WillCascadeOnDelete(false);
         }
     }

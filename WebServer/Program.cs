@@ -34,6 +34,7 @@ namespace WebServer
                 {
                     case "GET":
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
+                        await PatientRequests.HandleGetPatient(response, request);
                         break;
                     case "POST":
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);

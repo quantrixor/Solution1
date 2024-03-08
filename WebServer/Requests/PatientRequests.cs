@@ -1,7 +1,9 @@
 ﻿using DataCenter.Model;
 using Newtonsoft.Json;
 using System;
+using System.Data.Entity;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using WebServer.Settings;
@@ -10,6 +12,29 @@ namespace WebServer.Requests
 {
     public static class PatientRequests
     {
+        public static async Task HandleGetPatient(HttpListenerResponse response, HttpListenerRequest request)
+        {
+            try
+            {
+                using (var db = new dbModel())
+                {
+                    var pageSize = 50;
+                    var pageNumber = int.Parse(request.QueryString["page"] ?? "1");
+                    var patients = await db.Patient.OrderBy(p => p.ID).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+                    var settings = new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    };
+                    await Response.SendResponse(response, JsonConvert.SerializeObject(patients, settings));
+                    Logger.Log("GET запрос на получение пациентов выполнен", ConsoleColor.Green, HttpStatusCode.OK);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Log($"Ошибка: {e.Message}", ConsoleColor.DarkRed, HttpStatusCode.BadRequest);
+                await Response.SendResponse(response, "Bad request", "application/json", HttpStatusCode.BadRequest);
+            }
+        }
         public async static Task HandlePostPatient(HttpListenerRequest request, HttpListenerResponse response)
         {
             try

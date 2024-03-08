@@ -25,8 +25,16 @@ namespace DataCenter.Model
         [StringLength(150)]
         public string ReasonRejection { get; set; }
 
+        public int? WardID { get; set; }
+
+        public int? BedID { get; set; }
+
+        public virtual Bed Bed { get; set; }
+
         public virtual CodeHospitalization CodeHospitalization { get; set; }
 
         public virtual Patient Patient { get; set; }
+
+        public virtual Ward Ward { get; set; }
     }
 }

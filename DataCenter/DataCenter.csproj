@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Model\Bed.cs" />
     <Compile Include="Model\CodeHospitalization.cs" />
     <Compile Include="Model\dbModel.cs" />
     <Compile Include="Model\DiseaseHistory.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Model\TypeEvent.cs" />
     <Compile Include="Model\TypeHospitalization.cs" />
     <Compile Include="Model\Users.cs" />
+    <Compile Include="Model\Ward.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

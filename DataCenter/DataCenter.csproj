@@ -63,6 +63,7 @@
     <Compile Include="Model\Passport.cs" />
     <Compile Include="Model\Patient.cs" />
     <Compile Include="Model\PatientData.cs" />
+    <Compile Include="Model\PatientDTO.cs" />
     <Compile Include="Model\Permissions.cs" />
     <Compile Include="Model\Prescription.cs" />
     <Compile Include="Model\Referrals.cs" />

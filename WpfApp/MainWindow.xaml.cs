@@ -24,7 +24,7 @@ namespace WpfApp
     public partial class MainWindow : Window
     {
         private int currentPageNumber = 1;
-        private const int PageSize = 10;
+        private const int PageSize = 25;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,17 +33,17 @@ namespace WpfApp
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
+            currentPageNumber++;
+            LoadData(currentPageNumber);
+        }
+
+        private void btnBack_Click(object sender, RoutedEventArgs e)
+        {
             if (currentPageNumber > 1)
             {
                 currentPageNumber--;
                 LoadData(currentPageNumber);
             }
-        }
-
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            currentPageNumber++;
-            LoadData(currentPageNumber);
         }
 
 
@@ -54,7 +54,7 @@ namespace WpfApp
         }
 
 
-        private async Task<List<Patient>> GetPatientsAsync(int pageNumber)
+        private async Task<List<PatientDTO>> GetPatientsAsync(int pageNumber)
         {
             using (var client = new HttpClient())
             {
@@ -62,12 +62,12 @@ namespace WpfApp
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<Patient>>(json);
+                    return JsonConvert.DeserializeObject<List<PatientDTO>>(json);
                 }
                 else
                 {
                     MessageBox.Show("Failed!");
-                    return new List<Patient>();
+                    return new List<PatientDTO>();
                 }
             }
         }

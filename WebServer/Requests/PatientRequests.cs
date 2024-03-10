@@ -18,23 +18,56 @@ namespace WebServer.Requests
             {
                 using (var db = new dbModel())
                 {
-                    var pageSize = 50;
+                    var pageSize = 25;
                     var pageNumber = int.Parse(request.QueryString["page"] ?? "1");
-                    var patients = await db.Patient.OrderBy(p => p.ID).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+                    var patients = await db.Patient
+                        .OrderBy(p => p.ID)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize)
+                        .Select(p => new PatientDTO
+                        {
+                            ID = p.ID,
+                            Photo = p.Photo,
+                            FirstName = p.FirstName,
+                            LastName = p.LastName,
+                            Patronymic = p.Patronymic,
+                            IDPassport = p.IDPassport,
+                            DateOfBirth = p.DateOfBirth,
+                            IDGender = p.IDGender,
+                            Adress = p.Adress,
+                            Phone = p.Phone,
+                            Email = p.Email,
+                            MedicalCardNumber = p.MedicalCard.Number,
+                            InsuransePolicyNumber = p.InsuransePolicy.Number,
+                            Diagnos = p.Diagnos,
+                            IDDiseaseHistory = p.IDDiseaseHistory,
+                            IDInsuranseCompany = p.IDInsuranseCompany,
+                            WorkPlace = p.WorkPlace,
+                            PathContract = p.PathContract,
+                            PathPersonalData = p.PathPersonalData,
+                            Gender = p.Gender.Title,
+                        })
+                        .ToListAsync();
+
+
                     var settings = new JsonSerializerSettings()
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                     };
-                    await Response.SendResponse(response, JsonConvert.SerializeObject(patients, settings));
-                    Logger.Log("GET запрос на получение пациентов выполнен", ConsoleColor.Green, HttpStatusCode.OK);
+
+                    var content = JsonConvert.SerializeObject(patients, settings);
+
+                    await Response.SendResponse(response, content);
+                    Logger.Log("GET successfully!", ConsoleColor.Green, HttpStatusCode.OK);
                 }
             }
             catch (Exception e)
             {
-                Logger.Log($"Ошибка: {e.Message}", ConsoleColor.DarkRed, HttpStatusCode.BadRequest);
+                Logger.Log($"Error: {e.Message}", ConsoleColor.DarkRed, HttpStatusCode.BadRequest);
                 await Response.SendResponse(response, "Bad request", "application/json", HttpStatusCode.BadRequest);
             }
         }
+
         public async static Task HandlePostPatient(HttpListenerRequest request, HttpListenerResponse response)
         {
             try

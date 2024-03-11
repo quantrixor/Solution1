@@ -15,7 +15,8 @@ namespace DataCenter.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Patronymic { get; set; }
-        public int IDPassport { get; set; }
+        public string PassportNumber { get; set; }
+        public string PassportSerai { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public int? IDGender { get; set; }
         public string Adress { get; set; }
@@ -29,7 +30,7 @@ namespace DataCenter.Model
         public string WorkPlace { get; set; }
         public string PathContract { get; set; }
         public string PathPersonalData { get; set; }
-        // Дополнительные свойства
+        // Дополнительные свойства, при необходимости
         public string Gender { get; set; }
     }
 

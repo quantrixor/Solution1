@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -34,7 +35,7 @@ namespace WebServer.Requests
                 using (var db = new dbModel())
                 {
                     var user = db.Users.FirstOrDefault(item => item.Login == authDoctor.Login && item.Password == authDoctor.Password);
-                    if(user != null)
+                    if (user != null)
                     {
                         await Response.SendResponse(response, JsonConvert.SerializeObject(new { message = "Authentication successful" }), "application/json", HttpStatusCode.OK);
                     }
@@ -54,5 +55,87 @@ namespace WebServer.Requests
                 await Response.SendResponse(response, "Internal server error.", "application/json", HttpStatusCode.InternalServerError);
             }
         }
+
+        public static async Task HandleGetSchedules(HttpListenerRequest request, HttpListenerResponse response)
+        {
+            try
+            {
+                var query = request.Url.Query;
+                var parameters = query.TrimStart('?').Split('&')
+                    .Select(part => part.Split('='))
+                    .ToDictionary(split => split[0], split => Uri.UnescapeDataString(split[1]));
+
+                DateTime scheduleDate;
+                if (!parameters.TryGetValue("date", out var dateParam) || !DateTime.TryParse(dateParam, out scheduleDate))
+                {
+                    Logger.Log("Incorrect or missing date parameter.", ConsoleColor.Red, HttpStatusCode.InternalServerError);
+                    await Response.SendResponse(response, "Incorrect or missing date parameter.", "application/json", HttpStatusCode.BadRequest);
+                    return;
+                }
+
+                using (var db = new dbModel())
+                {
+                    var schedules = db.Schedules
+                                      .Where(s => s.ScheduleDate == scheduleDate)
+                                      .Include(s => s.ScheduleEvents)
+                                      .ToList();
+
+                    var schedulesDto = schedules.Select(s => new ScheduleDTO
+                    {
+                        ScheduleID = s.ScheduleID,
+                        ScheduleDate = s.ScheduleDate,
+                        StartTime = s.StartTime.ToString(),
+                        EndTime = s.EndTime.ToString(),
+                        ScheduleType = s.ScheduleType,
+                        Color = s.Color,
+                    }).ToList();
+
+                    if (schedulesDto.Any())
+                    {
+
+                        var schedulesJson = JsonConvert.SerializeObject(schedulesDto);
+                        await Response.SendResponse(response, schedulesJson, "application/json", HttpStatusCode.OK);
+                        Logger.Log("Get Successfully!");
+
+                    }
+                    else
+                    {
+                        await Response.SendResponse(response, "No schedules found.", "application/json", HttpStatusCode.NotFound);
+                        Logger.Log("No schedules found.", ConsoleColor.Red, HttpStatusCode.NotFound);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ConsoleColor.Red, HttpStatusCode.InternalServerError);
+                await Response.SendResponse(response, $"Internal server error: {ex.Message}", "application/json", HttpStatusCode.InternalServerError);
+            }
+        }
+
+        public static async Task HandleGetSpecialities(HttpListenerRequest request, HttpListenerResponse response)
+        {
+            try
+            {
+                using (var db = new dbModel())
+                {
+                    var specialities = db.Speciality.Select(s => new { s.ID, s.Title }).ToList();
+                    if (specialities.Any())
+                    {
+                        var specialitiesJson = JsonConvert.SerializeObject(specialities);
+                        await Response.SendResponse(response, specialitiesJson, "application/json", HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        await Response.SendResponse(response, "No specialities found.", "application/json", HttpStatusCode.NotFound);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ConsoleColor.Red, HttpStatusCode.InternalServerError);
+                await Response.SendResponse(response, $"Internal server error: {ex.Message}", "application/json", HttpStatusCode.InternalServerError);
+            }
+        }
+
     }
 }

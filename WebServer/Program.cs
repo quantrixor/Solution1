@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataCenter.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -75,6 +76,26 @@ namespace WebServer
                     case "POST":
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
                         await DoctorRequests.HandleAuthUser(request, response);
+                        break;
+                }
+            }
+            else if (path.StartsWith("/api/schedules"))
+            {
+                switch (method)
+                {
+                    case "GET":
+                        Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
+                        await DoctorRequests.HandleGetSchedules(request, response);
+                        break;
+                }
+            }
+            else if (path.StartsWith("/api/specialities"))
+            {
+                switch (method)
+                {
+                    case "GET":
+                        Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
+                        await DoctorRequests.HandleGetSpecialities(request, response);
                         break;
                 }
             }

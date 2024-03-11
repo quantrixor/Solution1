@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopTracking", "DesktopT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csproj", "{5482B0B2-F1A7-4111-84FC-8A78F6D21E95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleApp", "ScheduleApp\ScheduleApp.csproj", "{84A21D26-13D8-4231-B071-3792E6D6EF0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{5482B0B2-F1A7-4111-84FC-8A78F6D21E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5482B0B2-F1A7-4111-84FC-8A78F6D21E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5482B0B2-F1A7-4111-84FC-8A78F6D21E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A21D26-13D8-4231-B071-3792E6D6EF0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A21D26-13D8-4231-B071-3792E6D6EF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A21D26-13D8-4231-B071-3792E6D6EF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A21D26-13D8-4231-B071-3792E6D6EF0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

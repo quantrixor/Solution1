@@ -72,6 +72,7 @@
     <Compile Include="Model\RolePermissions.cs" />
     <Compile Include="Model\Roles.cs" />
     <Compile Include="Model\ScheduleChanges.cs" />
+    <Compile Include="Model\ScheduleDTO.cs" />
     <Compile Include="Model\ScheduleEvents.cs" />
     <Compile Include="Model\Schedules.cs" />
     <Compile Include="Model\ScheduleTemplates.cs" />

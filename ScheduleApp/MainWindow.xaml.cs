@@ -32,7 +32,6 @@ namespace ScheduleApp
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Загрузка данных для ComboBox'ов при загрузке окна
             await LoadInitialDataAsync();
         }
 
@@ -51,7 +50,6 @@ namespace ScheduleApp
                     specialityComboBox.SelectedValuePath = "ID";
                 }
 
-                // Подобным образом реализуйте загрузку и отображение данных о врачах, если необходимо
             }
             catch (Exception ex)
             {
@@ -62,9 +60,7 @@ namespace ScheduleApp
 
         private async void ApplyFilter_Click(object sender, RoutedEventArgs e)
         {
-            // Проверка выбранных значений и формирование запроса к API
             var selectedDate = datePicker.SelectedDate;
-            // Предположим, что фильтрация по специальности и врачам уже реализована в вашем API
 
             if (selectedDate.HasValue)
             {

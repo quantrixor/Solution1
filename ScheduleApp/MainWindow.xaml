@@ -16,22 +16,42 @@
         <StackPanel Grid.Column="0">
             <DatePicker x:Name="datePicker" Margin="0,0,0,10"/>
             <ComboBox x:Name="specialityComboBox" Margin="0,0,0,10">
-                <ComboBoxItem Content="Выберите специальность" IsEnabled="False"/>
+                
             </ComboBox>
             <ComboBox x:Name="doctorComboBox" Margin="0,0,0,10">
-                <ComboBoxItem Content="Выберите врача" IsEnabled="False"/>
+               
             </ComboBox>
             <Button Content="Применить фильтр" Click="ApplyFilter_Click"/>
         </StackPanel>
 
         <!-- Панель расписания -->
         <TabControl Grid.Column="1" Margin="10,0,0,0">
+            <!-- Дневное представление -->
             <TabItem Header="Дневное" Name="dailyTab">
-                <!-- Сюда будет добавлен контент для дневного представления -->
+                <DataGrid x:Name="dailyScheduleDataGrid" AutoGenerateColumns="True" Margin="10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Время" Binding="{Binding StartTime}" />
+                        <DataGridTextColumn Header="Событие" Binding="{Binding ScheduleType}" />
+                        <DataGridTextColumn Header="Врач" Binding="{Binding DoctorName}" />
+                        <DataGridTextColumn Header="Специальность" Binding="{Binding SpecialityName}" />
+                        
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
+            <!-- Недельное представление -->
             <TabItem Header="Недельное" Name="weeklyTab">
-                <!-- Сюда будет добавлен контент для недельного представления -->
+                <DataGrid x:Name="weeklyScheduleDataGrid" AutoGenerateColumns="True" Margin="10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding ScheduleDate}" />
+                        <DataGridTextColumn Header="Время начала" Binding="{Binding StartTime}" />
+                        <DataGridTextColumn Header="Время окончания" Binding="{Binding EndTime}" />
+                        <DataGridTextColumn Header="Событие" Binding="{Binding ScheduleType}" />
+                        <DataGridTextColumn Header="Врач" Binding="{Binding DoctorName}" />
+                        <DataGridTextColumn Header="Специальность" Binding="{Binding SpecialityName}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
         </TabControl>
+
     </Grid>
 </Window>

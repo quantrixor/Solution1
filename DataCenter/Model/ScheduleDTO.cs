@@ -14,6 +14,8 @@ namespace DataCenter.Model
         public string EndTime { get; set; }
         public string ScheduleType { get; set; }
         public string Color { get; set; }
+        public string DoctorName { get; set; }
+        public string SpecialityName { get; set; }
         // Другие необходимые свойства
     }
 

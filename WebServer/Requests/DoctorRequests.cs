@@ -88,6 +88,8 @@ namespace WebServer.Requests
                         EndTime = s.EndTime.ToString(),
                         ScheduleType = s.ScheduleType,
                         Color = s.Color,
+                        DoctorName = $"{s.Users.LastName} {s.Users.FirstName} {s.Users.Patronymic}",
+                        SpecialityName = s.Users.Speciality.Title
                     }).ToList();
 
                     if (schedulesDto.Any())
@@ -123,10 +125,13 @@ namespace WebServer.Requests
                     {
                         var specialitiesJson = JsonConvert.SerializeObject(specialities);
                         await Response.SendResponse(response, specialitiesJson, "application/json", HttpStatusCode.OK);
+                        Logger.Log("Successfully GET");
                     }
                     else
                     {
                         await Response.SendResponse(response, "No specialities found.", "application/json", HttpStatusCode.NotFound);
+                        Logger.Log("No specialities found.", ConsoleColor.Red, HttpStatusCode.NotFound);
+
                     }
                 }
             }

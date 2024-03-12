@@ -40,21 +40,22 @@ namespace ScheduleApp
         {
             try
             {
-                var response = await _client.GetAsync("http://localhost:8080/api/specialities");
-                if (response.IsSuccessStatusCode)
+                // Загрузка специализаций
+                var specialitiesResponse = await _client.GetAsync("http://localhost:8080/api/specialities");
+                if (specialitiesResponse.IsSuccessStatusCode)
                 {
-                    var specialitiesJson = await response.Content.ReadAsStringAsync();
+                    var specialitiesJson = await specialitiesResponse.Content.ReadAsStringAsync();
                     var specialities = JsonConvert.DeserializeObject<List<Speciality>>(specialitiesJson);
-                    specialityComboBox.ItemsSource = specialities.ToList();
+                    specialityComboBox.ItemsSource = specialities;
+                    specialityComboBox.DisplayMemberPath = "Title";
+                    specialityComboBox.SelectedValuePath = "ID";
                 }
-                else
-                {
-                    MessageBox.Show("Error retrieving data about specialties.");
-                }
+
+                // Подобным образом реализуйте загрузку и отображение данных о врачах, если необходимо
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show($"Error loading initial data: {ex.Message}");
             }
         }
 
@@ -63,8 +64,7 @@ namespace ScheduleApp
         {
             // Проверка выбранных значений и формирование запроса к API
             var selectedDate = datePicker.SelectedDate;
-            var selectedSpeciality = specialityComboBox.SelectedItem as string;
-            var selectedDoctor = doctorComboBox.SelectedItem as string;
+            // Предположим, что фильтрация по специальности и врачам уже реализована в вашем API
 
             if (selectedDate.HasValue)
             {
@@ -72,7 +72,10 @@ namespace ScheduleApp
                 if (response.IsSuccessStatusCode)
                 {
                     var schedulesJson = await response.Content.ReadAsStringAsync();
-                    // Десериализация и обновление UI
+                    var schedules = JsonConvert.DeserializeObject<List<ScheduleDTO>>(schedulesJson);
+
+                    dailyScheduleDataGrid.ItemsSource = schedules.Where(s => s.ScheduleDate.Value.Date == selectedDate.Value.Date).ToList();
+                    weeklyScheduleDataGrid.ItemsSource = schedules.Where(s => s.ScheduleDate.Value.Date >= selectedDate.Value.Date && s.ScheduleDate.Value.Date <= selectedDate.Value.Date.AddDays(7)).ToList();
                 }
                 else
                 {

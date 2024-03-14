@@ -55,6 +55,7 @@
     <Compile Include="Model\CodeHospitalization.cs" />
     <Compile Include="Model\dbModel.cs" />
     <Compile Include="Model\DiseaseHistory.cs" />
+    <Compile Include="Model\DoctorDTO.cs" />
     <Compile Include="Model\Gender.cs" />
     <Compile Include="Model\Hospitalization.cs" />
     <Compile Include="Model\InsuranseCompany.cs" />

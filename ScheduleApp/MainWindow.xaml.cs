@@ -49,6 +49,15 @@ namespace ScheduleApp
                     specialityComboBox.DisplayMemberPath = "Title";
                     specialityComboBox.SelectedValuePath = "ID";
                 }
+                var doctorsResponse = await _client.GetAsync("http://localhost:8080/api/doctors");
+                if (doctorsResponse.IsSuccessStatusCode)
+                {
+                    var doctorsJson = await doctorsResponse.Content.ReadAsStringAsync();
+                    var doctors = JsonConvert.DeserializeObject<List<DoctorDTO>>(doctorsJson);
+                    doctorComboBox.ItemsSource = doctors;
+                    doctorComboBox.DisplayMemberPath = "FullName";
+                    doctorComboBox.SelectedValuePath = "ID";
+                }
 
             }
             catch (Exception ex)
@@ -57,14 +66,27 @@ namespace ScheduleApp
             }
         }
 
-
         private async void ApplyFilter_Click(object sender, RoutedEventArgs e)
         {
             var selectedDate = datePicker.SelectedDate;
+            var selectedDoctorId = doctorComboBox.SelectedValue;
+            var selectedSpecialityId = specialityComboBox.SelectedValue;
 
             if (selectedDate.HasValue)
             {
-                var response = await _client.GetAsync($"http://localhost:8080/api/schedules?date={selectedDate.Value:yyyy-MM-dd}");
+                string url = $"http://localhost:8080/api/schedules?date={selectedDate.Value:yyyy-MM-dd}";
+
+                if (selectedDoctorId != null)
+                {
+                    url += $"&doctorId={selectedDoctorId}";
+                }
+
+                if (selectedSpecialityId != null)
+                {
+                    url += $"&specialityId={selectedSpecialityId}";
+                }
+
+                var response = await _client.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     var schedulesJson = await response.Content.ReadAsStringAsync();
@@ -78,6 +100,13 @@ namespace ScheduleApp
                     MessageBox.Show("Error getting schedule.");
                 }
             }
+        }
+
+
+        private void CancelFilter_Click(object sender, RoutedEventArgs e)
+        {
+            specialityComboBox.Text = null;
+            doctorComboBox.Text = null;
         }
     }
 }

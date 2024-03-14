@@ -22,13 +22,14 @@
                
             </ComboBox>
             <Button Content="Применить фильтр" Click="ApplyFilter_Click"/>
+            <Button Content="Отменить фильтр" Click="CancelFilter_Click" Margin="0,10,0,0"/>
         </StackPanel>
 
         <!-- Панель расписания -->
         <TabControl Grid.Column="1" Margin="10,0,0,0">
             <!-- Дневное представление -->
             <TabItem Header="Дневное" Name="dailyTab">
-                <DataGrid x:Name="dailyScheduleDataGrid" AutoGenerateColumns="True" Margin="10">
+                <DataGrid x:Name="dailyScheduleDataGrid" AutoGenerateColumns="False" Margin="10">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Время" Binding="{Binding StartTime}" />
                         <DataGridTextColumn Header="Событие" Binding="{Binding ScheduleType}" />
@@ -40,7 +41,7 @@
             </TabItem>
             <!-- Недельное представление -->
             <TabItem Header="Недельное" Name="weeklyTab">
-                <DataGrid x:Name="weeklyScheduleDataGrid" AutoGenerateColumns="True" Margin="10">
+                <DataGrid x:Name="weeklyScheduleDataGrid" AutoGenerateColumns="False" Margin="10">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Дата" Binding="{Binding ScheduleDate}" />
                         <DataGridTextColumn Header="Время начала" Binding="{Binding StartTime}" />

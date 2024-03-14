@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using WebServer.Settings;
@@ -55,12 +56,12 @@ namespace WebServer.Requests
                 await Response.SendResponse(response, "Internal server error.", "application/json", HttpStatusCode.InternalServerError);
             }
         }
-
         public static async Task HandleGetSchedules(HttpListenerRequest request, HttpListenerResponse response)
         {
             try
             {
                 var query = request.Url.Query;
+
                 var parameters = query.TrimStart('?').Split('&')
                     .Select(part => part.Split('='))
                     .ToDictionary(split => split[0], split => Uri.UnescapeDataString(split[1]));
@@ -73,12 +74,40 @@ namespace WebServer.Requests
                     return;
                 }
 
+                int? specialityId = null;
+                if (parameters.TryGetValue("specialityId", out var specialityIdParam) && int.TryParse(specialityIdParam, out var parsedSpecialityId))
+                {
+                    specialityId = parsedSpecialityId;
+                }
+
+                int? doctorId = null;
+                if (parameters.TryGetValue("doctorId", out var doctorIdParam) && int.TryParse(doctorIdParam, out var parsedDoctorId))
+                {
+                    doctorId = parsedDoctorId;
+                }
+
                 using (var db = new dbModel())
                 {
-                    var schedules = db.Schedules
-                                      .Where(s => s.ScheduleDate == scheduleDate)
-                                      .Include(s => s.ScheduleEvents)
-                                      .ToList();
+                    var schedulesQuery = db.Schedules
+                                        .Where(s => DbFunctions.TruncateTime(s.ScheduleDate) == DbFunctions.TruncateTime(scheduleDate));
+
+                    if (specialityId.HasValue)
+                    {
+                        schedulesQuery = schedulesQuery
+                                            .Where(s => s.Users.IDSpeciality == specialityId.Value);
+                    }
+
+                    if (doctorId.HasValue)
+                    {
+                        schedulesQuery = schedulesQuery
+                                            .Where(s => s.UserID == doctorId.Value);
+                    }
+
+                    var schedules = schedulesQuery
+                        .Include(s => s.ScheduleEvents)
+                        .ToList();
+
+
 
                     var schedulesDto = schedules.Select(s => new ScheduleDTO
                     {
@@ -113,14 +142,16 @@ namespace WebServer.Requests
                 await Response.SendResponse(response, $"Internal server error: {ex.Message}", "application/json", HttpStatusCode.InternalServerError);
             }
         }
-
         public static async Task HandleGetSpecialities(HttpListenerRequest request, HttpListenerResponse response)
         {
             try
             {
+                
+
                 using (var db = new dbModel())
                 {
                     var specialities = db.Speciality.Select(s => new { s.ID, s.Title }).ToList();
+
                     if (specialities.Any())
                     {
                         var specialitiesJson = JsonConvert.SerializeObject(specialities);
@@ -132,6 +163,42 @@ namespace WebServer.Requests
                         await Response.SendResponse(response, "No specialities found.", "application/json", HttpStatusCode.NotFound);
                         Logger.Log("No specialities found.", ConsoleColor.Red, HttpStatusCode.NotFound);
 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.Message, ConsoleColor.Red, HttpStatusCode.InternalServerError);
+                await Response.SendResponse(response, $"Internal server error: {ex.Message}", "application/json", HttpStatusCode.InternalServerError);
+            }
+
+        }
+        public static async Task HandleGetDoctors(HttpListenerRequest request, HttpListenerResponse response)
+        {
+            try
+            {
+                using (var db = new dbModel())
+                {
+                    var doctorRoleId = 3; // ID роли для врачей
+                    var doctors = db.Users
+                                .Where(u => u.RoleID == doctorRoleId)
+                                .Select(u => new DoctorDTO
+                                {
+                                    UserID = u.UserID,
+                                    FullName = u.LastName + " " + u.FirstName + " " + (u.Patronymic ?? "")
+                                })
+                                .ToList();
+
+                    if (doctors.Any())
+                    {
+                        var doctorsJson = JsonConvert.SerializeObject(doctors);
+                        await Response.SendResponse(response, doctorsJson, "application/json", HttpStatusCode.OK);
+                        Logger.Log("Successfully GET");
+                    }
+                    else
+                    {
+                        await Response.SendResponse(response, "No doctors found.", "application/json", HttpStatusCode.NotFound);
+                        Logger.Log("No doctors found.", ConsoleColor.Red, HttpStatusCode.NotFound);
                     }
                 }
             }

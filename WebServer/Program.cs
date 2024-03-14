@@ -99,6 +99,16 @@ namespace WebServer
                         break;
                 }
             }
+            else if (path.StartsWith("/api/doctors"))
+            {
+                switch (method)
+                {
+                    case "GET":
+                        Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
+                        await DoctorRequests.HandleGetDoctors(request, response);
+                        break;
+                }
+            }
             else
             {
                 Logger.Log($"Resources not found.", ConsoleColor.DarkRed, HttpStatusCode.NotFound);

@@ -22,7 +22,7 @@ namespace WebServer
 
             if (path.StartsWith("/api") && path.TrimEnd('/') == "/api")
             {
-                if(method == "GET")
+                if (method == "GET")
                 {
                     string htmlFilePath = "";
                     string htmlContent = File.ReadAllText(htmlFilePath);
@@ -43,7 +43,7 @@ namespace WebServer
                         break;
                     case "PUT":
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
-                        
+
                         break;
                     case "DELETE":
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
@@ -96,6 +96,29 @@ namespace WebServer
                     case "GET":
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
                         await DoctorRequests.HandleGetSpecialities(request, response);
+                        break;
+
+                }
+            }
+            // Работа с аптекой. 5-я сессия
+            else if (path.StartsWith("/api/Medicines"))
+            {
+                switch (method)
+                {
+                    case "GET":
+                        Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
+                        await PharmacyRequests.HandleGetMedicines(request, response);
+                        break;
+
+                }
+            }
+            else if (path.StartsWith("/api/medicineArrival"))
+            {
+                switch (method)
+                {
+                    case "POST":
+                        Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
+                        await PharmacyRequests.HandlePostMedicineArrival(request, response);
                         break;
                 }
             }

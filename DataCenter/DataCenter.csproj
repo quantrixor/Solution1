@@ -84,11 +84,23 @@
     <Compile Include="Model\TypeHospitalization.cs" />
     <Compile Include="Model\Users.cs" />
     <Compile Include="Model\Ward.cs" />
+    <Compile Include="PharmacyModel\dbPharmacy.cs" />
+    <Compile Include="PharmacyModel\Invoice.cs" />
+    <Compile Include="PharmacyModel\InvoiceMedicine.cs" />
+    <Compile Include="PharmacyModel\Medicine.cs" />
+    <Compile Include="PharmacyModel\MedicineRunningOut.cs" />
+    <Compile Include="PharmacyModel\MedicineTransfer.cs" />
+    <Compile Include="PharmacyModel\MedicineWriteOff.cs" />
+    <Compile Include="PharmacyModel\Warehouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

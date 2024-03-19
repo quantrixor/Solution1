@@ -143,9 +143,9 @@ namespace WebServer
         private static async Task ServerStart()
         {
             server = new HttpListener();
-            server.Prefixes.Add("http://localhost:8080/api/");
+            server.Prefixes.Add("http://192.168.84.75:8080/api/");
             server.Start();
-            Logger.Log("Server started listening on http://localhost:8080/api/", ConsoleColor.DarkGray);
+            Logger.Log("Server started listening on http://192.168.84.75:8080/api/", ConsoleColor.DarkGray);
 
             while (true)
             {

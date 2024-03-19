@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp", "WpfApp\WpfApp.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleApp", "ScheduleApp\ScheduleApp.csproj", "{84A21D26-13D8-4231-B071-3792E6D6EF0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PharmacyApp", "PharmacyApp\PharmacyApp.csproj", "{F35B569B-DF92-422E-98D9-72B3ACD82384}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,12 @@ Global
 		{84A21D26-13D8-4231-B071-3792E6D6EF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84A21D26-13D8-4231-B071-3792E6D6EF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84A21D26-13D8-4231-B071-3792E6D6EF0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F35B569B-DF92-422E-98D9-72B3ACD82384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F35B569B-DF92-422E-98D9-72B3ACD82384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F35B569B-DF92-422E-98D9-72B3ACD82384}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F35B569B-DF92-422E-98D9-72B3ACD82384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F35B569B-DF92-422E-98D9-72B3ACD82384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F35B569B-DF92-422E-98D9-72B3ACD82384}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

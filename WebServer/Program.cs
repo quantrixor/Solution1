@@ -109,10 +109,14 @@ namespace WebServer
                         Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
                         await PharmacyRequests.HandleGetMedicines(request, response);
                         break;
+                    case "POST":
+                        Logger.Log($"Received {request.HttpMethod} request on {request.Url.AbsolutePath}", ConsoleColor.DarkGray);
+                        await PharmacyRequests.HandlePostMedicineArrival(request, response);
+                        break;
 
                 }
             }
-            else if (path.StartsWith("/api/medicineArrival"))
+            else if (path.StartsWith("/api/MedicineArrival"))
             {
                 switch (method)
                 {

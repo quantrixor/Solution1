@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="MedicineArrivalData.cs" />
+    <Compile Include="MedicineArrivalItem.cs" />
     <Compile Include="Model\Bed.cs" />
     <Compile Include="Model\CodeHospitalization.cs" />
     <Compile Include="Model\dbModel.cs" />

@@ -77,7 +77,8 @@ namespace WebServer.Requests
                                 // Проверка срока годности препаратов
                                 if (item.ExpirationDate <= DateTime.Now)
                                 {
-                                    throw new Exception($"Medicine {item.Id} is expired.");
+                                    Logger.Log($"Medicine {item.Name} is expired.", ConsoleColor.DarkRed, HttpStatusCode.BadRequest);
+                                    await Response.SendResponse(response, $"Medicine {item.Name} is expired.", "application/json", HttpStatusCode.BadRequest);
                                 }
 
                                 // Здесь добавляется логика добавления информации о поступлении лекарства в базу данных
